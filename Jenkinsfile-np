@@ -1,0 +1,50 @@
+properties([
+	parameters([
+		choice(choices: "dev\nqa", description: 'KIRKE environment', name: 'environment')
+	])
+])
+
+def environment = params.environment
+
+if (environment == 'qa') {
+     K8sDockerPipelineNoChecks {
+        credentials_id    = 'svc-ucmprd'
+        lob               = 'nts'
+        vsad              = 'msjv'
+        app_name          = 'kirkeucmsso-qa'
+        app_version       = '0.1.1'
+        group_id          = 'com.verizon.ucm'
+        docker_file       = 'Dockerfile'
+        cluster_name      = 'c1-k8s-go0v'
+        cluster_zone      = 'green'
+        cluster_region    = 'us-east-1'
+        cluster_env       = 'np'
+        deploy_env        = 'ucmqa'
+		k8s_namespace     = 'msjv-qa-ucm'
+		helm_values_file  = 'values.yaml'
+        docker_build_args = [
+            ENV: "${environment}"
+        ]
+    }
+
+} else if (environment == 'dev') {
+     K8sDockerPipelineNoChecks {
+        credentials_id    = 'svc-ucmprd'
+        lob               = 'nts'
+        vsad              = 'msjv'
+        app_name          = 'kirkeucmsso-dev'
+        app_version       = '0.0.1'
+        group_id          = 'com.verizon.ucm'
+        docker_file       = 'Dockerfile'
+        cluster_name      = 'c1-k8s-go0v'
+        cluster_zone      = 'green'
+        cluster_region    = 'us-east-1'
+        cluster_env       = 'np'
+		deploy_env        = 'ucmdev'
+		k8s_namespace     = 'msjv-dev-ucm'
+		helm_values_file  = 'values.yaml'
+        docker_build_args = [
+            ENV: "${environment}"
+        ]
+    }
+}

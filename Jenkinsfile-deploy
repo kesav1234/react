@@ -1,0 +1,14 @@
+K8sDockerPipelineDeploy {
+	credentials_id    = 'svc-ucmprd'
+	lob               = 'nts'
+	vsad              = 'msjv'
+	app_name          = 'kirkeucmsso'
+	app_version       = "1.1.1"
+	cluster_name      = 'c1-k8s-go0v'
+	cluster_zone      = 'green'
+	cluster_region    = "us-east-1"
+	cluster_env       = "prod"
+	deploy_env        = "ucmprod"
+	k8s_namespace     = "msjv-prod-ucm"
+	helm_values_file  = "values.yaml"
+}
